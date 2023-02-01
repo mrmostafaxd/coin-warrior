@@ -1,0 +1,764 @@
+{
+    "start-scene": "menu",
+    "win_state": "win",
+    "lose_state": "lose",
+    "window":
+    {
+        "title":"Coin Warrior",
+        "size":{
+            "width":1280,
+            "height":720
+        },
+        "fullscreen": false
+    },
+    "scene": {
+        "renderer":{
+            "sky": "assets/textures/untitled.jpg",
+            "postprocess": "assets/shaders/postprocess/vignette.frag"
+            //"postprocess": "assets/shaders/postprocess/fog.frag"
+        },
+        "assets":{
+            "shaders":{
+                "tinted":{
+                    "vs":"assets/shaders/tinted.vert",
+                    "fs":"assets/shaders/tinted.frag"
+                },
+                "textured":{
+                    "vs":"assets/shaders/textured.vert",
+                    "fs":"assets/shaders/textured.frag"
+                },
+                "light": {
+                    "vs": "assets/shaders/light.vert",
+                    "fs": "assets/shaders/light.frag"
+                }
+            },
+            "textures":{
+                "moon": "assets/textures/moon.jpg",
+                "grass": "assets/textures/yellow-ground.jpg",
+                "wood": "assets/textures/wood.jpg",
+                "glass": "assets/textures/glass-panels.png",
+                "monkey": "assets/textures/monkey.png",
+                "player": "assets/textures/wood.jpg",
+                "rocky": "assets/textures/rocky.jpeg",
+                "green_coin": "assets/textures/green-coin.jpg",
+                "obstacle": "assets/textures/obstacle.jpg",
+                "specular": "assets/textures/specular.jpg",
+                "specular_low" : "assets/textures/specular_low.jpg",
+                "roughness": "assets/textures/roughness.jpg",
+                "albedo_green": "assets/textures/albedo green.jpg",
+                "albedo_danger": "assets/textures/albedo danger.jpg",
+                "roughness_high": "assets/textures/roughness_high.jpg",
+                "emission": "assets/textures/emissive.jpg",
+                "ambient": "assets/textures/ambient_occlusion.jpg"
+
+            },
+            "meshes":{
+                "cube": "assets/models/cube.obj",
+                "monkey": "assets/models/monkey.obj",
+                "plane": "assets/models/plane.obj",
+                "sphere": "assets/models/sphere.obj",
+                "player": "assets/models/capsule.obj",
+                "mountain_world": "assets/models/mountain_world.obj"
+            },
+            "samplers":{
+                "default":{},
+                "pixelated":{
+                    "MAG_FILTER": "GL_NEAREST"
+                }
+            },
+            "materials":{
+                "metal":{
+                    "type": "lit",
+                    "shader": "light",
+                    "pipelineState": {
+                        "faceCulling":{
+                            "enabled": false
+                        },
+                        "depthTesting":{
+                            "enabled": true
+                        }
+                    },
+                    "tint": [1.0, 1.0, 1.0, 1],
+                    "sampler": "default",
+                    "texture": "monkey",
+                    "specular": "specular"
+                },
+                "glass":{
+                    "type": "textured",
+                    "shader": "textured",
+                    "pipelineState": {
+                        "faceCulling":{
+                            "enabled": false
+                        },
+                        "depthTesting":{
+                            "enabled": true
+                        },
+                        "blending":{
+                            "enabled": true,
+                            "sourceFactor": "GL_SRC_ALPHA",
+                            "destinationFactor": "GL_ONE_MINUS_SRC_ALPHA"
+                        },
+                        "depthMask": false
+                    },
+                    "transparent": true,
+                    "tint": [1, 1, 1, 1],
+                    "texture": "glass",
+                    "sampler": "pixelated"
+                },
+                "grass":{
+                    "type": "lit",
+                    "shader": "light",
+                    "pipelineState": {
+                        "faceCulling":{
+                            "enabled": false
+                        },
+                        "depthTesting":{
+                            "enabled": true
+                        }
+                    },
+                    "tint": [1, 1, 1, 1],
+                    "texture": "grass",
+                    "sampler": "default",
+                    "roughness": "roughness_high",
+                    "specular": "specular"
+                },
+                "monkey":{
+                    "type": "lit",
+                    "shader": "light",
+                    "pipelineState": {
+                        "faceCulling":{
+                            "enabled": false
+                        },
+                        "depthTesting":{
+                            "enabled": true
+                        },
+                        "albedo":"albedo",
+                        "ao":  "ambient",
+                        "emission": "emission",
+                        "roughness": "roughness",
+                        "specular": "specular"
+                    },
+                    "tint": [1, 1, 1, 1],
+                    "texture": "monkey",
+                    "sampler": "default"
+                },
+                "moon":{
+                    "type": "textured",
+                    "shader": "textured",
+                    "pipelineState": {
+                        "faceCulling":{
+                            "enabled": false
+                        },
+                        "depthTesting":{
+                            "enabled": true
+                        }
+                    },
+                    "tint": [1, 1, 1, 1],
+                    "texture": "moon",
+                    "sampler": "default"
+                },
+                "player": {
+                    "type": "textured",
+                    "shader": "textured",
+                    "pipelineState": {
+                        "faceCulling":{
+                            "enabled": false
+                        },
+                        "depthTesting":{
+                            "enabled": true
+                        }
+                    },
+                    "tint": [1, 1, 1, 1],
+                    "texture": "player",
+                    "sampler": "default"
+
+                },
+                "mountain_world": {
+                    "type": "lit",
+                    "shader": "light",
+                    "pipelineState": {
+                        "faceCulling":{
+                            "enabled": false
+                        },
+                        "depthTesting":{
+                            "enabled": true
+                        }
+                    },
+                    "tint": [1, 1, 1, 1],
+                    "texture": "rocky",
+                    "sampler": "default",
+                    "roughnes": "roughness_high"
+                },
+                "coin": {
+                    "type": "lit",
+                    "shader": "light",
+                    "pipelineState": {
+                        "faceCulling":{
+                            "enabled": false
+                        },
+                        "depthTesting":{
+                            "enabled": true
+                        }
+                    },
+                    "tint": [1, 1, 1, 1],
+                    "texture": "green_coin",
+                    "sampler": "default",
+                    "albedo": "albedo_green",
+                    "specular": "specular"
+
+                },
+                "obstacle": {
+                    "type": "lit",
+                    "shader": "light",
+                    "pipelineState": {
+                        "faceCulling":{
+                            "enabled": false
+                        },
+                        "depthTesting":{
+                            "enabled": true
+                        }
+                    },
+                    "tint": [1, 1, 1, 1],
+                    "texture": "obstacle",
+                    "sampler": "default",
+                    "specular": "specular",
+                    "albedo": "albedo_danger",
+                    "roughnes": "roughness"
+                }
+            }
+        },
+        "world":[
+            {
+                "position": [0,-1,10],
+                "scale": [15,15,15],
+                        "components": [
+                            {
+                             "type": "Mesh Renderer",
+                             "mesh": "player",
+                             "material": "metal"
+                            },
+                            {
+                                "type": "Free Player Controller",
+                                "positionSensitivity": [1, 1, 1],
+                                "total_count": 10,
+                                "is_bounded": 1,
+                                "boundary": [-46.67, 46.67]
+                                
+                            }, 
+                            {
+                                "type": "Collider",
+                                "x_diff": 1,
+                                "y_diff": 1,
+                                "z_diff": 1,
+                                "action": 0
+
+                            }
+                         ],
+                "children": [
+                    {
+                        "rotation": [
+                            0,
+                            0,
+                            0
+                        ],
+                        "position": [
+                            0,0.2,0.2
+                        ],
+                        "components": [
+                            {
+                                "type": "Camera"
+                            },
+                            {
+                                "type": "Free Camera Controller"
+                            }
+                        ]
+                        
+                    },
+                    {
+                        "position": [0,10,0],
+                        "rotation": [0,0,0],
+                        "scale": [1,1,1],
+                        "components": [
+                            {
+                                "type": "Light",
+                                "color": [
+                                    1,
+                                    1,
+                                    1
+                                ],
+                                "attenuation": [
+                                    0.005,
+                                    0.005,
+                                    0.005
+                                ],
+                                "direction": [
+                                    0.9,
+                                    0.9,
+                                    0.9
+                                ],
+                                "lightType": "Point"
+                            }
+                        ]
+                    }
+                ]
+
+            },
+            {
+                "rotation": [-45, 0, 0],
+                "components": [
+                    {
+                        "type": "Mesh Renderer",
+                        "mesh": "monkey",
+                        "material": "monkey"
+                    },
+                    {
+                        "type": "Movement",
+                        //"linearVelocity": [0, 0.1, 0],
+                        "angularVelocity": [0, 45, 0]
+                    }
+                ]
+            },
+            {
+                "position": [0, -1, -350],
+                "rotation": [-90, 0, 0],
+                "scale": [200, 1000, 1],
+                "components": [
+                    {
+                        "type": "Mesh Renderer",
+                        "mesh": "plane",
+                        "material": "grass"
+                    }
+                ]
+            },
+            {
+                "position": [0, -1, -1250],
+                "scale": [0.2,1,0.4],
+                "components" : [
+                    {
+                        "type": "Mesh Renderer",
+                        "mesh": "mountain_world",
+                        "material": "mountain_world"
+                    }
+                ]
+            },
+            // COINS //
+            {
+                "position": [-20, 1, -8],
+                "scale": [1, 1, 0.2],
+                "components": [
+                    {
+                        "type": "Mesh Renderer",
+                        "mesh": "sphere",
+                        "material": "coin"
+                    },
+                    {
+                        "type": "Movement",
+                        "angularVelocity": [0, 90, 0]
+                    },
+                    {
+                        "type": "Collider",
+                        "x_diff": 1,
+                        "y_diff": 1,
+                        "z_diff": 1,
+                        "action": 1
+
+                    }
+                ],
+                "children": [
+                    {
+                        "position": [0,10,0],
+                        "rotation": [0,0,0],
+                        "scale": [1,1,1],
+                        "components": [
+                            {
+                                "type": "Light",
+                                "color": [
+                                    0.9,
+                                    0.0,
+                                    0.9
+                                ],
+                                "attenuation": [
+                                    0.005,
+                                    0.005,
+                                    0.0055
+                                ],
+                                "direction": [
+                                    0.9,
+                                    0.9,
+                                    0.9
+                                ],
+                                "cone_angles": [
+                                    10,
+                                    15
+                                ],
+                                "lightType": "Directional"
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                "position": [0, 1, -33],
+                "scale": [1, 1, 0.2],
+                "components": [
+                    {
+                        "type": "Mesh Renderer",
+                        "mesh": "sphere",
+                        "material": "coin"
+                    },
+                    {
+                        "type": "Movement",
+                        "angularVelocity": [0, 90, 0]
+                    },
+                    {
+                        "type": "Collider",
+                        "x_diff": 1,
+                        "y_diff": 1,
+                        "z_diff": 1,
+                        "action": 1
+
+                    }
+                ]
+            },
+            {
+                "position": [0, 1, -58],
+                "scale": [1, 1, 0.2],
+                "components": [
+                    {
+                        "type": "Mesh Renderer",
+                        "mesh": "sphere",
+                        "material": "coin"
+                    },
+                    {
+                        "type": "Movement",
+                        "angularVelocity": [0, 90, 0]
+                    },
+                    {
+                        "type": "Collider",
+                        "x_diff": 1,
+                        "y_diff": 1,
+                        "z_diff": 1,
+                        "action": 1
+
+                    }
+                ]
+            },
+            //--------//
+            {
+                "position": [-20, 1, -83],
+                "scale": [1, 1, 0.2],
+                "components": [
+                    {
+                        "type": "Mesh Renderer",
+                        "mesh": "sphere",
+                        "material": "coin"
+                    },
+                    {
+                        "type": "Movement",
+                        "angularVelocity": [0, 90, 0]
+                    },
+                    {
+                        "type": "Collider",
+                        "x_diff": 1,
+                        "y_diff": 1,
+                        "z_diff": 1,
+                        "action": 1
+
+                    }
+                ]
+            },
+            {
+                "position": [0, 1, -108],
+                "scale": [1, 1, 0.2],
+                "components": [
+                    {
+                        "type": "Mesh Renderer",
+                        "mesh": "sphere",
+                        "material": "coin"
+                    },
+                    {
+                        "type": "Movement",
+                        "angularVelocity": [0, 90, 0]
+                    },
+                    {
+                        "type": "Collider",
+                        "x_diff": 1,
+                        "y_diff": 1,
+                        "z_diff": 1,
+                        "action": 1
+
+                    }
+                ]
+            },
+            {
+                "position": [20, 1, -133],
+                "scale": [1, 1, 0.2],
+                "components": [
+                    {
+                        "type": "Mesh Renderer",
+                        "mesh": "sphere",
+                        "material": "coin"
+                    },
+                    {
+                        "type": "Movement",
+                        "angularVelocity": [0, 90, 0]
+                    },
+                    {
+                        "type": "Collider",
+                        "x_diff": 1,
+                        "y_diff": 1,
+                        "z_diff": 1,
+                        "action": 1
+
+                    }
+                ]
+            },
+            //--------//
+            {
+                "position": [-20, 1, -158],
+                "scale": [1, 1, 0.2],
+                "components": [
+                    {
+                        "type": "Mesh Renderer",
+                        "mesh": "sphere",
+                        "material": "coin"
+                    },
+                    {
+                        "type": "Movement",
+                        "angularVelocity": [0, 90, 0]
+                    },
+                    {
+                        "type": "Collider",
+                        "x_diff": 1,
+                        "y_diff": 1,
+                        "z_diff": 1,
+                        "action": 1
+
+                    }
+                ]
+            },
+            {
+                "position": [0, 1, -183],
+                "scale": [1, 1, 0.2],
+                "components": [
+                    {
+                        "type": "Mesh Renderer",
+                        "mesh": "sphere",
+                        "material": "coin"
+                    },
+                    {
+                        "type": "Movement",
+                        "angularVelocity": [0, 90, 0]
+                    },
+                    {
+                        "type": "Collider",
+                        "x_diff": 1,
+                        "y_diff": 1,
+                        "z_diff": 1,
+                        "action": 1
+
+                    }
+                ]
+            },
+            {
+                "position": [20, 1, -208],
+                "scale": [1, 1, 0.2],
+                "components": [
+                    {
+                        "type": "Mesh Renderer",
+                        "mesh": "sphere",
+                        "material": "coin"
+                    },
+                    {
+                        "type": "Movement",
+                        "angularVelocity": [0, 90, 0]
+                    },
+                    {
+                        "type": "Collider",
+                        "x_diff": 1,
+                        "y_diff": 1,
+                        "z_diff": 1,
+                        "action": 1
+
+                    }
+                ]
+            },
+            {
+                "position": [0, 1, -233],
+                "scale": [1, 1, 0.2],
+                "components": [
+                    {
+                        "type": "Mesh Renderer",
+                        "mesh": "sphere",
+                        "material": "coin"
+                    },
+                    {
+                        "type": "Movement",
+                        "angularVelocity": [0, 90, 0]
+                    },
+                    {
+                        "type": "Collider",
+                        "x_diff": 1,
+                        "y_diff": 1,
+                        "z_diff": 1,
+                        "action": 1
+
+                    }
+                ]
+            },
+            ////////////
+
+            /// OBSTACLES ///
+            {
+                "position": [0, 3, -73],
+                "scale": [20, 5, 0.5],
+                "components": [
+                    {
+                        "type": "Mesh Renderer",
+                        "mesh": "cube",
+                        "material": "obstacle"
+                    },
+                    {
+                        "type": "Collider",
+                        "x_diff": 19.75,
+                        "y_diff": 5,
+                        "z_diff": 0.5,
+                        "action": 2
+
+                    },
+                    {
+                        "type": "Obstacle"
+                    }
+                ]
+            },
+
+            /////////////////
+
+            {
+                "position": [45, 3, -248],
+                "scale": [20, 5, 0.5],
+                "components": [
+                    {
+                        "type": "Mesh Renderer",
+                        "mesh": "cube",
+                        "material": "obstacle"
+                    },
+                    {
+                        "type": "Collider",
+                        "x_diff": 19.75,
+                        "y_diff": 5,
+                        "z_diff": 0.5,
+                        "action": 2
+
+                    },
+                    {
+                        "type": "Obstacle"
+                    }
+                ]
+            },
+
+
+            // {
+            //     "position": [0, -1, -80],
+            //     "rotation": [-90, 0, 0],
+            //     "scale": [10, 100, 1],
+            //     "components": [
+            //         {
+            //             "type": "Mesh Renderer",
+            //             "mesh": "cube",
+            //             "material": "grass"
+            //         }
+            //     ]
+            // },
+            {
+                "position": [0, 1, 2],
+                "rotation": [0, 0, 0],
+                "scale": [2, 2, 2],
+                "components": [
+                    {
+                        "type": "Mesh Renderer",
+                        "mesh": "plane",
+                        "material": "glass"
+                    }
+                ]
+            },
+            {
+                "position": [0, 1, -2],
+                "rotation": [0, 0, 0],
+                "scale": [2, 2, 2],
+                "components": [
+                    {
+                        "type": "Mesh Renderer",
+                        "mesh": "plane",
+                        "material": "glass"
+                    }
+                ]
+            },
+            {
+                "position": [2, 1, 0],
+                "rotation": [0, 90, 0],
+                "scale": [2, 2, 2],
+                "components": [
+                    {
+                        "type": "Mesh Renderer",
+                        "mesh": "plane",
+                        "material": "glass"
+                    }
+                ]
+            },
+            {
+                "position": [-2, 1, 0],
+                "rotation": [0, 90, 0],
+                "scale": [2, 2, 2],
+                "components": [
+                    {
+                        "type": "Mesh Renderer",
+                        "mesh": "plane",
+                        "material": "glass"
+                    }
+                ]
+            },
+            {
+                "position": [0, 3, 0],
+                "rotation": [90, 0, 0],
+                "scale": [2, 2, 2],
+                "components": [
+                    {
+                        "type": "Mesh Renderer",
+                        "mesh": "plane",
+                        "material": "glass"
+                    }
+                ]
+            },
+            {
+                "position": [0, 10, 0],
+                "rotation": [45, 45, 0],
+                "scale": [5, 5, 5],
+                "components": [
+                    {
+                        "type": "Mesh Renderer",
+                        "mesh": "sphere",
+                        "material": "moon"
+                    },
+                    {
+                        "type": "Movement",
+                        "angularVelocity": [0, 90, 0]
+                    }
+                ]
+            },
+            {
+                "position": [0, -1, 9],
+                "rotation": [0, 0, 0],
+                "scale": [10, 10, 10],
+                "components": [
+                    {
+                        "type": "Mesh Renderer",
+                        "mesh": "player",
+                        "material": "player"
+                    }
+                    
+                ]
+            }
+        ]
+    }
+}
